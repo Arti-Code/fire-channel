@@ -60,11 +60,14 @@ function create_pc() {
     el.autoplay = true
     el.controls = true
     document.getElementById('remoteVideo').appendChild(el)
+    console.log("[VIDEO]");
+    info("[VIDEO]");
+      
   }
 
-  //pc.addTransceiver('audio', {'direction': 'recvonly'})
   pc.addTransceiver('video', {'direction': 'recvonly'})
-  //pc.addTransceiver('video', {'direction': 'recvonly'})
+  console.log("new video transceiver");
+  info("new video transceiver");
 
 };
 
