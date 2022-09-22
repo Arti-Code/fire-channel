@@ -53,6 +53,19 @@ function create_pc() {
   pc.onnegotiationneeded = e => {
     pc.createOffer().then(d => pc.setLocalDescription(d)).catch();
   };
+
+  pc.ontrack = function (event) {
+    var el = document.createElement(event.track.kind)
+    el.srcObject = event.streams[0]
+    el.autoplay = true
+    el.controls = true
+    document.getElementById('remoteVideo').appendChild(el)
+  }
+
+  //pc.addTransceiver('audio', {'direction': 'recvonly'})
+  pc.addTransceiver('video', {'direction': 'recvonly'})
+  //pc.addTransceiver('video', {'direction': 'recvonly'})
+
 };
 
 function db_read() {
