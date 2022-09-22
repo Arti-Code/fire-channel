@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>FireChannel</title>
@@ -10,11 +11,13 @@
     <script defer src="/__/firebase/9.8.4/firebase-auth-compat.js"></script>
     <script defer src="/__/firebase/9.8.4/firebase-database-compat.js"></script>
     <script defer src="/__/firebase/init.js?useEmulator=true"></script>
-  </head>
+</head>
 
-  <body>
+<body>
 
-    <div class="container">
+  <div class="container mx-auto">
+
+    <div class="container mx-auto my-4">
       <div class="row">
         <div class="col justify-content-center">
           <h3 class="text-center">FireChannel</h3>
@@ -22,14 +25,30 @@
       </div>
 
       <div class="row">
-        <div class="col-6 justify-content-center">
-          <p class="text-center">Device ID:</p>
+        <div class="col-3 justify-content-center">
+
         </div>
-        <div class="col-6 justify-content-center">
+        <div class="col-3 justify-content-center">
+          <p class="text-center">Device:</p>
+        </div>
+        <div class="col-3 justify-content-center">
           <input type="text" id="device_id" name="device_id">
+        </div>
+        <div class="col-3 justify-content-center">
+          
         </div>
       </div>
 
+      <div class="row">
+        <div class="col">
+          <span>
+
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mx-auto my-4">
       <div class="row">
         <div class="col-4">
           <button type="button" class="btn btn-success" id="btn_start"><i class="bi bi-play-circle" style="font-size: 2rem; color: white;"></i></button>
@@ -41,31 +60,40 @@
           <button type="button" class="btn btn-info" id="btn_info"><i class="bi bi-info-circle" style="font-size: 2rem; color: white;"></i></button>
         </div>
       </div>
+    </div>
 
+    <div class="container mx-auto my-4">
       <div class="row">
-        <div class="col-12">
-          <textarea id="local_sd" cols="100" rows="8"></textarea>
+        <div class="col-3 justify-content-center">
+          <p class="text-center">message:</p>
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col-12">
-          <textarea id="remote_sd" cols="100" rows="8"></textarea>
+        <div class="col-6 justify-content-center">
+          <input type="text" id="input_msg" name="input_msg">
         </div>
-      </div>
-
-      <div class="row">
-        <div class="col">
-          <p id="messages"></p>
+        <div class="col-3">
+          <button type="button" class="btn btn-success" id="btn_send">
+            <i class="bi bi-envelope-check-fill" style="font-size: 1rem; color: white;"></i> SEND
+          </button>
         </div>
       </div>
     </div>
 
+    <div class="container mx-auto my-4">
+      <div class="row">
+        <div class="col-3"></div>
+        <div class="col-6">
+          <p id="messages"></p>
+        </div>
+        <div class="col-3"></div>
+      </div>
+    </div>
 
-    <script src="js/auth.js" type="module"></script>
-    <script defer src="js/main.js" type="module"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+  </div>
+
+  <script src="js/auth.js" type="module"></script>
+  <script defer src="js/main.js" type="module"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
     
-  </body>
+</body>
 
 </html>

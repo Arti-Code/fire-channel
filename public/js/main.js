@@ -7,13 +7,15 @@ const messages = document.getElementById('messages');
 const btn_info = document.getElementById('btn_info');
 const btn_start = document.getElementById('btn_start');
 const btn_stop = document.getElementById('btn_stop');
+const btn_send = document.getElementById('btn_send');
 const input_device = document.getElementById('device_id');
+const input_msg = document.getElementById('input_msg');
 let device_id = "";
-btn_stop.setAttribute('disabled', 'true');
-let run = false;
 let pc = null;
 let dc = null;
 
+btn_stop.setAttribute('disabled', 'true');
+input_msg.setAttribute('disabled', 'true');
 
 function create_pc() {
   pc = new RTCPeerConnection({
@@ -23,15 +25,15 @@ function create_pc() {
   dc = pc.createDataChannel('LINK');
 
   dc.onclose = () => {
-    info('link has closed');
+    info('CHANNEL CLOSE');
   };
 
   dc.onopen = () => {
-    info('link has opened');
+    info('CHANNEL OPEN');
   };
 
   dc.onmessage = e => {
-    info(`'${dc.label}': '${e.data}'`);
+    info(`-> '${e.data}'`);
   };
 
   pc.oniceconnectionstatechange = e => {
@@ -42,6 +44,8 @@ function create_pc() {
     if (event.candidate === null) {
       let lsd = btoa(JSON.stringify(pc.localDescription))
       console.log("[OFFER]: " + lsd);
+      info("[OFFER] OK");
+      db_write(device_id, "answer", "");
       db_write(device_id, "offer", lsd);
     }
   };
@@ -69,6 +73,11 @@ function db_write(device, msg_type, data) {
     .set(data);
 };
 
+function send_msg(msg) {
+  dc.send(msg);
+  info("<- " + msg);
+}
+
 function info(text) {
   messages.innerHTML = messages.innerHTML + text + '<br />';
 };
@@ -81,16 +90,17 @@ function wait_answer() {
 };
 
 function set_remote_sdp(data) {
-  if (data === '') {
-    return alert("ERROR: Remote Session Description is empty");
-  }
-  try {
-    let sdp = JSON.parse(atob(data));
-    pc.setRemoteDescription(new RTCSessionDescription(sdp));
-    info("[ANSWER]: " + data);
-    console.log("[ANSWER]: " + data);
-  } catch (e) {
-    alert(e);
+  if (data == "") {
+    return;
+  } else {
+    try {
+      let sdp = JSON.parse(atob(data));
+      pc.setRemoteDescription(new RTCSessionDescription(sdp));
+      info("[ANSWER]: OK");
+      console.log("[ANSWER]: OK");
+    } catch (e) {
+      alert(e);
+    }
   }
 };
 
@@ -105,22 +115,25 @@ btn_info.addEventListener("click", () => {
 });
 
 btn_stop.addEventListener("click", () => {
-  info("communication ended");
-  console.log("communication ended");
-  device_id = '';
   btn_stop.setAttribute('disabled', 'true');
   btn_start.removeAttribute('disabled');
   input_device.removeAttribute('disabled');
   input_device.value = '';
+  input_msg.setAttribute('disabled', 'true');
 });
 
 btn_start.addEventListener("click", () => {
   device_id = input_device.value;
-  info("link with device: " + device_id);
-  console.log("link with device: " + device_id);
   input_device.setAttribute('disabled', 'true');
   btn_start.setAttribute('disabled', 'true');
   btn_stop.removeAttribute('disabled');
+  input_msg.removeAttribute('disabled');
   create_pc();
   wait_answer();
+});
+
+btn_send.addEventListener("click", () => {
+  let msg = input_msg.value;
+  send_msg(msg);
+  input_msg.value = "";
 });
